@@ -1,0 +1,36 @@
+<ng-container [formGroup]="facebookForm">
+  <mat-card class="form-container">
+    <mat-card-title>Facebook form</mat-card-title>
+
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput placeholder="Enter Username" type="text" formControlName="username">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput placeholder="Enter Password" type="password" formControlName="password">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>LDAP URL</mat-label>
+      <input matInput formControlName="ldapUrl">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>LDAP Domain</mat-label>
+      <input matInput formControlName="ldapDomain">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Base DN </mat-label>
+      <input matInput formControlName="baseDn">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>User Search Base</mat-label>
+      <input matInput formControlName="userSearchBase">
+    </mat-form-field>
+
+  </mat-card>
+</ng-container>

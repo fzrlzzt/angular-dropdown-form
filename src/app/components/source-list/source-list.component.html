@@ -1,0 +1,50 @@
+<!-- checkbox-list.component.html -->
+<div class="section-content">
+  <div class="formRow">
+    <div class="flex-1">
+      <div class="checkbox-group-title">
+        <span class="checkbox-group-title-text">Authentication Context Class References</span>
+      </div>
+      <!-- <mat-icon matTooltip="Select one or more Context Class References" matTooltipPosition="right">
+        info
+      </mat-icon> -->
+
+      <div class="scrollable-checkbox-container inline-flex">
+        <mat-checkbox *ngFor="let context of authContexts" class="flex-checkbox-item checkbox-group">
+          {{ context }}
+        </mat-checkbox>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="weight">
+    <th mat-header-cell *matHeaderCellDef> Weight </th>
+    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="symbol">
+    <th mat-header-cell *matHeaderCellDef> Symbol </th>
+    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+-->

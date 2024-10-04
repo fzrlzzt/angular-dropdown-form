@@ -1,0 +1,37 @@
+<!-- <header>
+  <button mat-raised-button type="submit" style="float: right;">Submit</button>
+</header> -->
+<div class="form-wrapper" style="display: flex; width: 100%;">
+  <div class="content">
+  <ng-container [formGroup]="usersourceForm" style="flex-direction:column;">
+    <h2>FORM PAGE</h2>
+
+    <!-- <form (ngSubmit)="onSubmit()"> -->
+      <mat-form-field>
+        <mat-label>Source Name</mat-label>
+        <input matInput placeholder="Enter Source Name" type="text" formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>User Source Type</mat-label>
+        <mat-select [(value)]="selectedType" formControlName="type">
+          <mat-option></mat-option>
+          @for (option of types; track option) {
+            <mat-option [value]="option.value">{{option.viewValue}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Conditionally render the form component based on the selected type -->
+      <app-facebook-form *ngIf="selectedType === 'facebook'" [sourceForm]="usersourceForm"></app-facebook-form>
+      <app-github-form *ngIf="selectedType === 'github'" [sourceForm]="usersourceForm"></app-github-form>
+      <app-google-form *ngIf="selectedType === 'google'" [sourceForm]="usersourceForm"></app-google-form>
+    <!-- </form> -->
+
+  </ng-container>
+</div>
+  <pre style="margin-top:50px; border: 1px solid red; width: fit-content; float: right;">
+    {{ usersourceForm.value | json }}
+  </pre>
+
+</div>
