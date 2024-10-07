@@ -2,15 +2,64 @@
   <mat-card class="form-container">
     <mat-card-title>Google form</mat-card-title>
 
+    <button mat-raised-button (click)="connectToOpenID()">Connect</button>
+
     <mat-form-field>
       <mat-label>Username</mat-label>
       <input matInput placeholder="Enter Username" type="text" formControlName="username">
+      <mat-error *ngIf="googleForm.get('username')?.hasError('required') && googleForm.get('username')?.touched">
+        Username is required.
+      </mat-error>
+      <mat-error *ngIf="googleForm.get('username')?.hasError('minlength') && googleForm.get('username')?.touched">
+        Username must be at least 3 characters long.
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Password</mat-label>
       <input matInput placeholder="Enter Password" type="password" formControlName="password">
+      <mat-error *ngIf="googleForm.get('password')?.hasError('required') && googleForm.get('password')?.touched">
+        Password is required.
+      </mat-error>
+      <mat-error *ngIf="googleForm.get('password')?.hasError('minlength') && googleForm.get('password')?.touched">
+        Password must be at least 6 characters long.
+      </mat-error>
     </mat-form-field>
-    
+
+    <mat-form-field>
+      <mat-label>Scope</mat-label>
+      <mat-select formControlName="scope">
+        <mat-option *ngFor="let scope of scopes" [value]="scope">{{ scope }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Response Mode</mat-label>
+      <mat-select formControlName="responseMode">
+        <mat-option *ngFor="let mode of responseModes" [value]="mode">{{ mode }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Response Type</mat-label>
+      <mat-select formControlName="responseType">
+        <mat-option *ngFor="let type of responseTypes" [value]="type">{{ type }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Preferred Algorithm</mat-label>
+      <mat-select formControlName="preferredAlgorithm">
+        <mat-option *ngFor="let algo of preferredAlgorithms" [value]="algo">{{ algo }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div formArrayName="clientAuthMethod" class="checkbox-group">
+      <label>Client Authentication Method:</label>
+      <div *ngFor="let method of clientAuthMethods; let i = index">
+        <mat-checkbox [formControlName]="i">{{ method }}</mat-checkbox>
+      </div>
+    </div>
+
   </mat-card>
 </ng-container>

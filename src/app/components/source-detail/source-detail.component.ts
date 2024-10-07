@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 interface Type {
   value: string;
@@ -9,54 +9,80 @@ interface Type {
 @Component({
   selector: 'app-source-detail',
   templateUrl: './source-detail.component.html',
-  styleUrl: './source-detail.component.scss'
+  styleUrls: ['./source-detail.component.scss']
 })
-export class SourceDetailComponent {
+export class SourceDetailComponent implements OnInit {
   types: Type[] = [
-    { value: 'facebook', viewValue: 'facebook'},
-    { value: 'github', viewValue: 'github'},
-    { value: 'google', viewValue: 'google'}
+    { value: 'facebook', viewValue: 'Facebook' },
+    { value: 'github', viewValue: 'Github' },
+    { value: 'google', viewValue: 'Google' }
   ];
-  selectedType = this.types[0].value; // Bind this to the dropdown
+
+  selectedType = this.types[0].value; // Default type selection
   usersourceForm!: UntypedFormGroup;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private cd: ChangeDetectorRef
-  ) {
-    this.usersourceForm = this.formBuilder.group({
-    name: [''],
-    accountId: [''],
-    type: [this.selectedType],
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.onTypeChange();
-  }
+    // Initialize the form with default values and config structure
+    this.initializeForm();
 
-  onTypeChange(): void {
+    // Set up dynamic form controls based on selected type
+    this.updateConfigDataForm(this.selectedType);
+
+    // Listen for type changes to dynamically update the configData form group
     this.usersourceForm.get('type')?.valueChanges.subscribe(type => {
       this.selectedType = type;
-      this.resetConfigDataForm();
-      this.cd.detectChanges();
+      this.updateConfigDataForm(type);
+    });
+
+    this.usersourceForm.get('name')?.valueChanges.subscribe(name => {
+      this.usersourceForm.patchValue({ accountId: name }, { emitEvent: false });
     });
   }
 
-  onSubmit() {
-    console.log(this.usersourceForm.value);
-    // Handle form submission logic
+  initializeForm(): void {
+    this.usersourceForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      accountId: [''],
+      type: [this.selectedType, Validators.required],
+      configData: this.formBuilder.group({}) // Placeholder group for configData fields
+    });
   }
 
-  resetConfigDataForm(): void {
-    // Remove the existing 'configData' form group if it exists
-    if (this.usersourceForm.contains('configData')) {
-      this.usersourceForm.removeControl('configData');
-    }
+  updateConfigDataForm(type: string): void {
+    // Remove existing configData group if present
+    this.usersourceForm.removeControl('configData');
+
+    // Listen for type changes to dynamically notify child components to update the form
+    this.usersourceForm.get('type')?.valueChanges.subscribe(type => {
+      this.selectedType = type;
+      // Clear existing configData in the main form before letting the child reinitialize it.
+      (this.usersourceForm.get('configData') as UntypedFormGroup).reset();
+    });
+
+    // Re-add the configData group to the main form
     this.usersourceForm.addControl('configData', this.formBuilder.group({}));
+
+    // Trigger change detection manually to update UI (if needed)
+    this.cd.detectChanges();
   }
 
-  selectType(event: Event) {
+  onSubmit(): void {
+    if (this.usersourceForm.valid) {
+      console.log('Form Data:', this.usersourceForm.value);
+    } else {
+      console.log('Form is invalid');
+      this.usersourceForm.markAllAsTouched();
+    }
+  }
+
+  selectType(event: Event): void {
     this.selectedType = (event.target as HTMLSelectElement).value;
+    this.usersourceForm.patchValue({ type: this.selectedType });
+    this.updateConfigDataForm(this.selectedType);
   }
 }
