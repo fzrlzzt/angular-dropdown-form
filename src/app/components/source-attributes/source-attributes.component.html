@@ -1,0 +1,76 @@
+<div class="form-wrapper" style="display: flex; width: 100%">
+  <div class="content">
+    <form [formGroup]="usersourceForm" (ngSubmit)="onSubmit()">
+      <!-- <button mat-raised-button type="submit" [disabled]="usersourceForm.invalid" style="float: right;">Submit</button> -->
+      <button type="button" (click)="handleAddAttributes()">Add</button>
+      <ng-container [formGroup]="attributeForm">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="mat-elevation-z8"
+          formArrayName="attributes"
+        >
+
+          <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef> No </th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+                {{ i }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef> Value </th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+              <mat-form-field>
+                <input formControlName="value" matInput (blur)="mapAttributesToUserAttribute()">
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="key">
+            <th mat-header-cell *matHeaderCellDef> Key </th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+              <mat-form-field>
+                <input formControlName="key" matInput (blur)="mapAttributesToUserAttribute()">
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+              <button (click)="handleRemoveAttribute(i)">Remove</button>
+            </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="userAttributeCol"></tr>
+          <tr mat-row *matRowDef="let row; columns: userAttributeCol;"></tr>
+        </table>
+      </ng-container>
+    </form>
+  </div>
+  <pre
+    style="
+      margin-top: 50px;
+      border: 1px solid red;
+      width: fit-content;
+      float: right;
+    "
+  >
+  {{ attributeForm.status }}
+  {{ attributeForm.value | json }}
+</pre
+  >
+  <pre
+    style="
+      margin-top: 50px;
+      border: 1px solid red;
+      width: fit-content;
+      float: right;
+    "
+  >
+  {{ usersourceForm.status }}
+  {{ usersourceForm.value | json }}
+</pre
+  >
+</div>
