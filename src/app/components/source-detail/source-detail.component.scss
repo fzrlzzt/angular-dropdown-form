@@ -24,3 +24,25 @@ button {
 mat-card {
   margin: 16px;
 }
+
+.attribute-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.key-field,
+.value-field {
+  margin-right: 10px;
+  flex: 1;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+

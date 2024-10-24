@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { MatTableModule } from '@angular/material/table'
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,7 +17,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
+import { UserSourceConfigComponent } from './user-source-config/user-source-config.component';
 
 @NgModule({
   declarations: [
@@ -25,9 +28,11 @@ import { HttpClientModule } from '@angular/common/http';
     SourceDetailComponent,
     GoogleFormComponent,
     FacebookFormComponent,
-    GithubFormComponent
+    GithubFormComponent,
+    UserSourceConfigComponent
   ],
   imports: [
+    MatAutocompleteModule,
     MatTableModule,
     FormsModule,
     BrowserAnimationsModule, // Required for animations
@@ -39,6 +44,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
     HttpClientModule,
   ],
   providers: [

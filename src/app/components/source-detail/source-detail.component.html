@@ -1,17 +1,36 @@
-
-<div class="form-wrapper" style="display: flex; width: 100%;">
+<div class="form-wrapper" style="display: flex; width: 100%">
   <div class="content">
-  <form [formGroup]="usersourceForm" style="flex-direction:column;" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="usersourceForm"
+      style="flex-direction: column"
+      (ngSubmit)="onSubmit()"
+    >
+      <button
+        mat-raised-button
+        type="submit"
+        [disabled]="usersourceForm.invalid"
+        style="float: right"
+      >
+        Submit
+      </button>
 
-    <button mat-raised-button type="submit" [disabled]="usersourceForm.invalid" style="float: right;">Submit</button>
+      <h2>FORM PAGE</h2>
 
-    <h2>FORM PAGE</h2>
-
-    <!-- <form (ngSubmit)="onSubmit()"> -->
+      <!-- <form (ngSubmit)="onSubmit()"> -->
       <mat-form-field>
         <mat-label>Source Name</mat-label>
-        <input matInput placeholder="Enter Source Name" type="text" formControlName="name">
-        <mat-error *ngIf="usersourceForm.get('name')?.hasError('required') && usersourceForm.get('name')?.touched">
+        <input
+          matInput
+          placeholder="Enter Source Name"
+          type="text"
+          formControlName="name"
+        />
+        <mat-error
+          *ngIf="
+            usersourceForm.get('name')?.hasError('required') &&
+            usersourceForm.get('name')?.touched
+          "
+        >
           Source Name is required.
         </mat-error>
       </mat-form-field>
@@ -20,23 +39,235 @@
         <mat-label>User Source Type</mat-label>
         <mat-select formControlName="type">
           <mat-option *ngFor="let option of types" [value]="option.value">
-            {{option.viewValue}}
+            {{ option.viewValue }}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="usersourceForm.get('type')?.hasError('required') && usersourceForm.get('type')?.touched">
+        <mat-error
+          *ngIf="
+            usersourceForm.get('type')?.hasError('required') &&
+            usersourceForm.get('type')?.touched
+          "
+        >
           Please select a User Source Type.
         </mat-error>
       </mat-form-field>
 
       <!-- Conditionally render the form component based on the selected type -->
-      <app-facebook-form *ngIf="selectedType === 'facebook'" [sourceForm]="usersourceForm"></app-facebook-form>
+      <!-- <app-facebook-form *ngIf="selectedType === 'facebook'" [sourceForm]="usersourceForm"></app-facebook-form>
       <app-github-form *ngIf="selectedType === 'github'" [sourceForm]="usersourceForm"></app-github-form>
-      <app-google-form *ngIf="selectedType === 'google'" [sourceForm]="usersourceForm"></app-google-form>
-    <!-- </form> -->
+      <app-google-form *ngIf="selectedType === 'google'" [sourceForm]="usersourceForm"></app-google-form> -->
+      <!-- </form> -->
 
-  </form>
-</div>
-  <pre style="margin-top:50px; border: 1px solid red; width: fit-content; float: right;">
+      <!-- User Attributes  -->
+      <mat-card *ngIf="selectedType !== 'facebook'">
+        <h3>User Attribute Section</h3>
+
+        <!-- Add New Attribute -->
+        <!-- <div class="attribute-row">
+          <button mat-button (click)="addUserAttribute()">Add Attribute</button>
+        </div>
+
+        <table
+          mat-table
+          [dataSource]="userAttributeKeys()"
+          class="mat-elevation-z8"
+        >
+          <ng-container matColumnDef="key">
+            <th mat-header-cell *matHeaderCellDef>Key</th>
+            <td
+              mat-cell
+              *matCellDef="let row; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="key" placeholder="Enter key" [matAutocomplete]="autoInternal"/>
+                <mat-error *ngIf="row.get('key').invalid"
+                  >Key is required.</mat-error
+                >
+                <mat-autocomplete #autoInternal="matAutocomplete">
+                  <mat-option
+                    *ngFor="let option of filteredInternalAttributes | async"
+                    [value]="option"
+                  >
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef>Value</th>
+            <td
+              mat-cell
+              *matCellDef="let row; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field appearance="outline">
+                <input
+                  matInput
+                  formControlName="value"
+                  placeholder="Enter value"
+                  [matAutocomplete]="autoExternal"
+                />
+                <mat-error *ngIf="row.get('value').invalid"
+                  >Value is required.</mat-error
+                >
+                <mat-autocomplete #autoExternal="matAutocomplete">
+                  <mat-option
+                    *ngFor="let option of filteredExternalAttributes | async"
+                    [value]="option"
+                  >
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let row; let i = index">
+              <button mat-button color="warn" (click)="removeAttribute(i)">
+                Remove
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr *matNoDataRow>
+            <td
+              class="table-data table-data-with-no-data"
+              [attr.colspan]="displayedColumns.length"
+            >
+              <p class="no-data-message">
+                There are no attributes sets.
+                <span class="hightlight-text" (click)="addUserAttribute()"
+                  >Add New Attribute</span
+                >.
+              </p>
+            </td>
+          </tr>
+        </table> -->
+      </mat-card>
+
+      <!-- <mat-card>
+        <h3>Auto Complete</h3>
+
+        <mat-form-field>
+          <input type="text"
+                 matInput
+                 [formControl]="externalAttributeControl"
+                 (blur)="updateUserAttributes('')"
+                 [matAutocomplete]="autoExternal">
+          <mat-autocomplete #autoExternal="matAutocomplete">
+            <mat-option *ngFor="let option of filteredExternalAttributes | async" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input type="text"
+                 matInput
+                 [formControl]="internalAttributeControl"
+                 (blur)="updateUserAttributes('')"
+                 [matAutocomplete]="autoInternal">
+          <mat-autocomplete #autoInternal="matAutocomplete">
+            <mat-option *ngFor="let option of filteredInternalAttributes | async" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+      </mat-card> -->
+
+      <mat-card *ngIf="selectedType === 'facebook'">
+        <h3>COMPLEX USER ATTRIBUTE</h3>
+
+        <button type="button" mat-flat-button color="warn" (click)="handleAddComplexUserAttribute()">
+          ADD ATTRIBUTE
+        </button>
+
+        <table mat-table [dataSource]="getComplexUserAttributeGroup()" class="mat-elevation-z8">
+          <!-- Required Dropdown Column -->
+          <ng-container matColumnDef="required">
+            <th mat-header-cell *matHeaderCellDef> Required </th>
+            <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
+              <mat-form-field>
+                <mat-select formControlName="required">
+                  <mat-option [value]="true">True</mat-option>
+                  <mat-option [value]="false">False</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <!-- Name Input Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
+              <mat-form-field>
+                <input matInput formControlName="name" placeholder="Name">
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <!-- Friendly Name Input Column -->
+          <ng-container matColumnDef="friendlyName">
+            <th mat-header-cell *matHeaderCellDef> Friendly Name </th>
+            <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
+              <mat-form-field>
+                <input matInput formControlName="friendlyName" placeholder="Friendly Name">
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <!-- Name Format Input Column -->
+          <ng-container matColumnDef="nameFormat">
+            <th mat-header-cell *matHeaderCellDef> Name Format </th>
+            <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
+              <mat-form-field>
+                <input matInput formControlName="nameFormat" placeholder="Name Format">
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <!-- Map To Input Column -->
+          <ng-container matColumnDef="mapTo">
+            <th mat-header-cell *matHeaderCellDef> Map To </th>
+            <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
+              <mat-form-field>
+                <input matInput formControlName="mappedAs" placeholder="Map To">
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column (e.g., Remove Row) -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let row; let i = index">
+              <button mat-raised-button color="warn" (click)="handleRemoveComplexAttribute(i)">Remove</button>
+            </td>
+          </ng-container>
+
+          <!-- Header and Row Definitions -->
+          <tr mat-header-row *matHeaderRowDef="complexUserAttrCol"></tr>
+          <tr mat-row *matRowDef="let row; columns: complexUserAttrCol;"></tr>
+        </table>
+
+      </mat-card>
+    </form>
+  </div>
+  <pre
+    style="
+      margin-top: 50px;
+      border: 1px solid red;
+      width: fit-content;
+      float: right;
+    "
+  >
     {{ usersourceForm.value | json }}
   </pre>
   <pre>{{ usersourceForm.status }}</pre>
