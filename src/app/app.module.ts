@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { MatTableModule } from '@angular/material/table'
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +32,7 @@ import { SourceAttributesComponent } from './components/source-attributes/source
   ],
   imports: [
     MatTableModule,
+    MatAutocompleteModule,
     FormsModule,
     BrowserAnimationsModule, // Required for animations
     MatSelectModule,

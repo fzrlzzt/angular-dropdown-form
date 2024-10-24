@@ -2,11 +2,15 @@
   <div class="content">
     <form [formGroup]="usersourceForm" (ngSubmit)="onSubmit()">
       <!-- <button mat-raised-button type="submit" [disabled]="usersourceForm.invalid" style="float: right;">Submit</button> -->
+      
+      <mat-card>
+      <h2>User Attribute</h2>
+      
       <button type="button" (click)="handleAddAttributes()">Add</button>
       <ng-container [formGroup]="attributeForm">
         <table
           mat-table
-          [dataSource]="dataSource"
+          [dataSource]="attributeData"
           class="mat-elevation-z8"
           formArrayName="attributes"
         >
@@ -19,19 +23,32 @@
           </ng-container>
 
           <ng-container matColumnDef="value">
-            <th mat-header-cell *matHeaderCellDef> Value </th>
+            <th mat-header-cell *matHeaderCellDef> Name </th>
             <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
               <mat-form-field>
-                <input formControlName="value" matInput (blur)="mapAttributesToUserAttribute()">
+                <mat-label>Name</mat-label>
+                <input type="text" matInput [formControlName]="'value'" [matAutocomplete]="autoValue" (blur)="mapAttributesToUserAttribute()">
+                <mat-autocomplete #autoValue="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredValues(i) | async" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error></mat-error>
               </mat-form-field>
             </td>
           </ng-container>
           
           <ng-container matColumnDef="key">
-            <th mat-header-cell *matHeaderCellDef> Key </th>
+            <th mat-header-cell *matHeaderCellDef> Map To </th>
             <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
               <mat-form-field>
-                <input formControlName="key" matInput (blur)="mapAttributesToUserAttribute()">
+                <mat-label>Map to</mat-label>
+                <input matInput [formControlName]="'key'" [matAutocomplete]="autoKey" (blur)="mapAttributesToUserAttribute()">
+                <mat-autocomplete #autoKey="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredKeys(i) | async" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
               </mat-form-field>
             </td>
           </ng-container>
@@ -47,6 +64,92 @@
           <tr mat-row *matRowDef="let row; columns: userAttributeCol;"></tr>
         </table>
       </ng-container>
+    </mat-card>
+
+    <mat-card>
+      <h2>Complex User Attribute</h2>
+      <button type="button" (click)="handleAddComplexAttributes()">Add</button>
+      <ng-container>
+        <table
+          mat-table
+          [dataSource]="complexData"
+          class="mat-elevation-z8"
+          formArrayName="complexUserAttributes"
+        >
+          <ng-container matColumnDef="required">
+            <th mat-header-cell *matHeaderCellDef> Required </th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+              <mat-form-field appearance="outline">
+                <mat-label>Required</mat-label>
+                <mat-select [formControlName]="'required'" placeholder="Required">
+                  <mat-option [value]="false">No</mat-option>
+                  <mat-option [value]="true">Yes</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="friendlyName">
+            <th mat-header-cell *matHeaderCellDef> friendlyName </th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input type="text" matInput [formControlName]="'friendlyName'" [matAutocomplete]="autoValue" (blur)="mapAttributesToUserAttribute()">
+                <mat-autocomplete #autoValue="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredValues(i) | async" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error></mat-error>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nameFormat">
+            <th mat-header-cell *matHeaderCellDef> nameFormat </th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input type="text" matInput [formControlName]="'nameFormat'" [matAutocomplete]="autoValue" (blur)="mapAttributesToUserAttribute()">
+                <mat-autocomplete #autoValue="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredValues(i) | async" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error></mat-error>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="mappedAs">
+            <th mat-header-cell *matHeaderCellDef> mappedAs </th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input type="text" matInput [formControlName]="'mappedAs'" [matAutocomplete]="autoValue" (blur)="mapAttributesToUserAttribute()">
+                <mat-autocomplete #autoValue="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredValues(i) | async" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error></mat-error>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" class="table-form">
+              <button (click)="handleRemoveComplexAttribute(i)">Remove</button>
+            </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="complexUserAttributeCol"></tr>
+          <tr mat-row *matRowDef="let row; columns: complexUserAttributeCol;"></tr>
+        </table>
+      </ng-container>
+    </mat-card>
+
     </form>
   </div>
   <pre
@@ -57,10 +160,9 @@
       float: right;
     "
   >
-  {{ attributeForm.status }}
-  {{ attributeForm.value | json }}
-</pre
-  >
+  {{ usersourceForm.status }}
+  {{ usersourceForm.value | json }}
+  </pre>
   <pre
     style="
       margin-top: 50px;
@@ -69,8 +171,7 @@
       float: right;
     "
   >
-  {{ usersourceForm.status }}
-  {{ usersourceForm.value | json }}
-</pre
-  >
+  {{ attributeForm.status }}
+  {{ attributeForm.value | json }}
+</pre>
 </div>
