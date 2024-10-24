@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { UserSourceConfigComponent } from './user-source-config/user-source-config.component';
+import { SourceAttributesComponent } from './components/source-attributes/source-attributes.component';
 
 @NgModule({
   declarations: [
@@ -29,11 +30,13 @@ import { UserSourceConfigComponent } from './user-source-config/user-source-conf
     GoogleFormComponent,
     FacebookFormComponent,
     GithubFormComponent,
-    UserSourceConfigComponent
+    UserSourceConfigComponent,
+    SourceAttributesComponent
   ],
   imports: [
     MatAutocompleteModule,
     MatTableModule,
+    MatAutocompleteModule,
     FormsModule,
     BrowserAnimationsModule, // Required for animations
     MatSelectModule,
